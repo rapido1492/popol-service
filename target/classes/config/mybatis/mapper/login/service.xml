@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="service">
+
+	<insert id="service_insert" parameterType="vo.service.serviceVO">
+		insert into custom_busi values(
+			#{busi_num},
+			#{custom},
+			#{SHORT},
+			#{ceo},
+			#{charge_person},
+			#{busi_condition},
+			#{item},
+			#{post_num},
+			#{addr1},
+			#{addr2},
+			#{tel},
+			#{fax},
+			#{homepage},
+			#{co_yn},
+			#{foreign_yn},
+			#{tax_yn},
+			#{country_eng},
+			#{country_kor},
+			#{special_relation},
+			#{trade_stop},
+			#{contract_period_s},
+			#{contract_period_e},
+			#{regi_info_man},
+			sysdate,
+			#{modi_info_man},
+			#{modi_info_date}
+		)
+	</insert>
+	
+	<insert id="account_insert" parameterType="vo.service.accountVO">
+		insert into account values(
+			#{busi_num},
+			#{factory},
+			#{trade_bank},
+			#{account_num}
+		)
+	</insert>
+	
+	<select id="service_searchlist" parameterType="java.util.Map" resultType="vo.service.serviceVO">
+		select * from custom_busi where busi_num like '%'||#{busi_num}||'%' and custom like '%'||#{custom}||'%'
+	</select>
+	
+	<resultMap id="service" type="service">
+		<result column="busi_num" property="busi_num" />
+		<result column="custom" property="custom" />
+		<result column="SHORT" property="SHORT" />
+		<result column="ceo" property="ceo" />	
+		<result column="charge_person" property="charge_person" />	
+		<result column="busi_condition" property="busi_condition" />	
+		<result column="item" property="item" />	
+		<result column="post_num" property="post_num" />	
+		<result column="addr1" property="addr1" />	
+		<result column="addr2" property="addr2" />	
+		<result column="tel" property="tel" />	
+		<result column="fax" property="fax" />	
+		<result column="homepage" property="homepage" />	
+		<result column="co_yn" property="co_yn" />	
+		<result column="foreign_yn" property="foreign_yn" />	
+		<result column="tax_yn" property="tax_yn" />	
+		<result column="country_eng" property="country_eng" />
+		<result column="country_kor" property="country_kor" />
+		<result column="special_relation" property="special_relation" />
+		<result column="trade_stop" property="trade_stop" />
+		<result column="contract_period_s" property="contract_period_s" />
+		<result column="contract_period_e" property="contract_period_e" />
+		<result column="regi_info_man" property="regi_info_man" />
+		<result column="regi_info_date" property="regi_info_date" />
+		<result column="modi_info_man" property="modi_info_man" />
+		<result column="modi_info_date" property="modi_info_date" />
+		
+		<association javaType="account" property="vo">
+			<id column="account" property="factory"/>
+			<result column="factory" property="factory"/>
+			<result column="trade_bank" property="trade_bank"/>
+			<result column="account_num" property="account_num"/>
+		</association>
+	</resultMap>
+	
+<!-- 	<resultMap id="account" type="account">
+		<result column="factory" property="factory"/>
+		<result column="trade_bank" property="trade_bank"/>
+		<result column="account_num" property="account_num"/>
+	</resultMap>
+	
+ 	<resultMap type="rm_test" id="id_test">
+		<result column="busi_num" property="BUSI_NUM" />
+		<result column="factory" property="FACTORY" />
+	</resultMap> -->
+	
+	<!-- 	select * from custom_busi inner join account on custom_busi.busi_num = account.busi_num where custom_busi.busi_num= #{busi_num}  -->
+	<select id="service_modify" parameterType="int" resultType="vo.service.serviceVO" resultMap="service">
+		select custom_busi.busi_num,
+				custom_busi.custom,
+				custom_busi.SHORT,
+				custom_busi.ceo,
+				custom_busi.charge_person,
+				custom_busi.busi_condition,
+				custom_busi.item,
+				custom_busi.post_num,
+				custom_busi.addr1,
+				custom_busi.addr2,
+				custom_busi.tel,
+				custom_busi.fax,
+				custom_busi.homepage,
+				custom_busi.co_yn,
+				custom_busi.foreign_yn,
+				custom_busi.tax_yn,
+				custom_busi.country_eng,
+				custom_busi.country_kor,
+				custom_busi.special_relation,
+				custom_busi.trade_stop,
+				custom_busi.contract_period_s,
+				custom_busi.contract_period_e,
+				custom_busi.regi_info_man,
+				custom_busi.regi_info_date,
+				custom_busi.modi_info_man,
+                custom_busi.modi_info_date, 
+                account.factory,
+                account.trade_bank,
+                account.account_num
+                from custom_busi inner join account on custom_busi.busi_num = account.busi_num where custom_busi.busi_num= #{busi_num} 
+	</select>
+	
+	<update id="service_modify_update" parameterType="vo.service.serviceVO">
+		update custom_busi set 			
+			busi_num= #{busi_num},
+			custom= #{custom},
+			SHORT= #{SHORT},
+			ceo= #{ceo},
+			charge_person= #{charge_person},
+			busi_condition= #{busi_condition},
+			item= #{item},
+			post_num= #{post_num},
+			addr1= #{addr1},
+			addr2= #{addr2},
+			tel= #{tel},
+			fax= #{fax},
+			homepage= #{homepage},
+			co_yn= #{co_yn},
+			foreign_yn= #{foreign_yn},
+			tax_yn= #{tax_yn},
+			country_eng= #{country_eng},
+			country_kor= #{country_kor},
+			special_relation= #{special_relation},
+			trade_stop= #{trade_stop},
+			contract_period_s= #{contract_period_s},
+			contract_period_e= #{contract_period_e},
+			regi_info_man= #{regi_info_man},
+			modi_info_date= sysdate
+			where busi_num= #{busi_num}
+	</update>
+	
+	<delete id="service_delete" parameterType="java.lang.String" >
+		delete from custom_busi where BUSI_NUM= #{busi_num}
+	</delete>
+	
+	<delete id="account_delete" parameterType="java.lang.String">
+		delete from account where BUSI_NUM= #{busi_num}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
